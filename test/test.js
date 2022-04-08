@@ -70,10 +70,10 @@ describe("ABCToken contract", function () {
       const amount = 10;
       await hardhatToken.approve(addr1.address, amount);
       const addr1Balance = await hardhatToken.balanceOf(addr1.address);
-      console.log(addr1Balance);
+      // console.log(addr1Balance);
       const allowance = await hardhatToken.allowance(owner.address, addr1.address);
       expect(allowance).to.equal(amount);
-      console.log(allowance);
+      // console.log(allowance);
     });
 
     it('increases the allowance', async() => {
@@ -87,27 +87,29 @@ describe("ABCToken contract", function () {
       const allowance = await hardhatToken.allowance(owner.address, addr1.address);
       console.log(allowance);
 
+      await hardhatToken.approve(addr1.address, amount_to_be_increased);
       await hardhatToken.increaseAllowance(addr1.address, amount_to_be_increased);
-      await hardhatToken.connect(addr1).transferFrom(owner.address, addr2.address, amount_to_be_increased);
-      const Balance = await hardhatToken.balanceOf(addr2.address)
-      expect(Balance).to.equal(20);
+      await hardhatToken.connect(addr1).transferFrom(owner.address, addr2.address, final);
+      const Balance = await hardhatToken.balanceOf(addr2.address);
+      expect(Balance).to.equal(30);
 
     });
 
     it('decreases the allowance', async() => {
-      const amount = 30;
-      const amount_to_be_increased = 5;
+      const amount = 50;
+      const amount_to_be_decreased = 20;
+      const final = 30;
 
       await hardhatToken.approve(addr1.address, amount);
       const addr1Balance = await hardhatToken.balanceOf(addr1.address);
 
       const allowance = await hardhatToken.allowance(owner.address, addr1.address);
       console.log(allowance);
-
-      await hardhatToken.decreaseAllowance(addr1.address, amount_to_be_increased);
-      await hardhatToken.connect(addr1).transferFrom(owner.address, addr2.address, amount_to_be_increased);
-      const Balance = await hardhatToken.balanceOf(addr2.address)
-      expect(Balance).to.equal(5);
+ 
+      await hardhatToken.decreaseAllowance(addr1.address, amount_to_be_decreased);
+      await hardhatToken.connect(addr1).transferFrom(owner.address, addr2.address, final);
+      const Balance = await hardhatToken.balanceOf(addr2.address);
+      expect(Balance).to.equal(30);
 
     });
 
